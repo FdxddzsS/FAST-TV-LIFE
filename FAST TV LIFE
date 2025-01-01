@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alraqi TV</title>
+    <link rel="icon" href="">
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .jwplayer {
+            position: absolute !important;
+        }
+
+        .jw-logo-container {
+            position: absolute;
+            top: 2%;
+            right: 55%;
+        }
+    </style>
+</head>
+<body>
+    <!-- مشغل الفيديو -->
+    <div id="jwplayerDiv"></div>
+
+    <!-- مشغل الصوت -->
+    <audio id="audioTrack" controls>
+        <source src="https://az1.mediacp.eu/listen/anisfm/1M" type="audio/mpeg">
+        متصفحك لا يدعم تشغيل الصوت.
+    </audio>
+
+    <script src="//libraries.alraqi-tv.com/jwplayer.js"></script>
+    <script type="text/javascript">
+        // تكوين البث المباشر
+        var config = {
+            file: "https://stream.veo.buzz:6050/sport/ch1/adaptive.m3u8"
+        };
+
+        // إعداد مشغل الفيديو
+        var player = jwplayer("jwplayerDiv").setup({
+            file: config.file,
+            position: 'bottom',
+            autostart: true,
+            stretching: "uniform",
+            width: "100%",
+            type: "hls",
+            volume: 100,
+            mute: false,
+            pipIcon: true,
+            castIcon: true,
+            title: "Live Stream",
+            logo: {
+                file: "",
+                hide: false,
+                position: "bottom-right",
+                margin: 150,
+                height: 25
+            }
+        });
+
+        // التحكم في صوت الفيديو بناءً على تشغيل/إيقاف الصوتيات
+        var audioTrack = document.getElementById('audioTrack');
+
+        audioTrack.addEventListener('play', function () {
+            player.setVolume(0); // كتم صوت الفيديو عند تشغيل الصوتيات
+        });
+
+        audioTrack.addEventListener('pause', function () {
+            player.setVolume(100); // إعادة صوت الفيديو عند إيقاف الصوتيات
+        });
+
+        audioTrack.addEventListener('ended', function () {
+            player.setVolume(100); // إعادة صوت الفيديو تلقائياً عند انتهاء الصوتيات
+        });
+    </script>
+</body>
+</html>
